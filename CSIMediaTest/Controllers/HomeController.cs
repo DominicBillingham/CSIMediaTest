@@ -28,6 +28,13 @@ namespace CSIMediaTest.Controllers
                 numberArray.Add(int.Parse(number));
             }
 
+            if (sortByAscending)
+            {
+                numberArray = numberArray.OrderBy(number => number).ToList();
+            } else
+            {
+                numberArray = numberArray.OrderByDescending(number => number).ToList();
+            }
 
             return Ok(numberArray);
         }
