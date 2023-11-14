@@ -2,6 +2,7 @@
 using AspNetCore.Data;
 using CSIMediaTest.Data.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Diagnostics;
@@ -56,7 +57,16 @@ namespace CSIMediaTest.Controllers
             List<int> numberList = new List<int>();
             foreach (string number in numberListString.Split(" "))
             {
-                numberList.Add(int.Parse(number));
+                int result;
+                if (int.TryParse(number, out result))
+                {
+                    numberList.Add(int.Parse(number));
+                }
+                else
+                {
+                    ModelState.AddModelError("Incorrect Input", "This isn't a number and has been ignored: " + number);
+                    continue;
+                }
             }
             return numberList;
         }

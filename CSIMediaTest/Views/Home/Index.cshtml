@@ -13,6 +13,7 @@
 <form asp-controller="home" asp-action="sort" class="mb-4">
 
     <h4>Input Numbers Below</h4>
+    <p class="m-0 text-info">Anything that isn't a number or separated with a space will be ignored</p>
     <input name="numberListString" class="col-3" type="text" placeholder="15 12 10" />
 
     <select name="sortByAscending">
@@ -21,6 +22,8 @@
     </select>
 
     <input type="submit" value="Press to sort" />
+
+    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
 
 </form>
 
