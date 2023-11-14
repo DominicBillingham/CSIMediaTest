@@ -1,17 +1,15 @@
-﻿using CSIMediaTest.Models;
+﻿
+using AspNetCore.Data;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using System.Globalization;
 
 namespace CSIMediaTest.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
+        private ApplicationDbContext _context;
+        public HomeController(ApplicationDbContext applicationDbContext) { 
+            _context = applicationDbContext;
         }
 
         public IActionResult Index()
@@ -22,11 +20,17 @@ namespace CSIMediaTest.Controllers
         public IActionResult Sort(string numberList, bool sortByAscending)
         {
 
+            var fish = _context.SortedLists.FirstOrDefault();
+
+            Stopwatch sw = Stopwatch.StartNew();
+
             List<int> numberArray = new List<int>();
             foreach (string number in numberList.Split(" "))
             {
                 numberArray.Add(int.Parse(number));
             }
+
+            //Assumption 1: Time taken is just for the sort, rather than the full HTTP request
 
             if (sortByAscending)
             {
@@ -36,18 +40,11 @@ namespace CSIMediaTest.Controllers
                 numberArray = numberArray.OrderByDescending(number => number).ToList();
             }
 
-            return Ok(numberArray);
+            var timeElapsed = sw.Elapsed;
+
+
+            return Ok(timeElapsed.TotalMilliseconds);
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
     }
 }
