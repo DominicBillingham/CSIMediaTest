@@ -42,11 +42,7 @@ namespace CSIMediaTest.Controllers
             var timeElapsed = sw.Elapsed.TotalMilliseconds;
 
             var sortedNumbers = new SortedNumbers(sortByAscending, (float)timeElapsed);
-
-            foreach (int number in numberList)
-            {
-                sortedNumbers.Numbers.Add(new Number(number));
-            }
+            sortedNumbers.Numbers = JsonSerializer.Serialize(numberList);
 
             _context.SortedNumbers.Add(sortedNumbers);
             _context.SaveChanges();

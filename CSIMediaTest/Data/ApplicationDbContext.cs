@@ -19,6 +19,5 @@ namespace AspNetCore.Data
             optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
         }
         public DbSet<SortedNumbers> SortedNumbers { get; set; }
-        public DbSet<Number> Numbers { get; set; }
     }
 }

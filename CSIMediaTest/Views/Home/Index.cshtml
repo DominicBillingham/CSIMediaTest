@@ -30,11 +30,8 @@
 
     <h4>Results</h4>
     <p>Time Taken: @Model.TimeTakenToSort</p>
-    <p>Sorted List: 
-        @foreach(var num in Model.Numbers)
-        {
-            <span>@num.Value</span>
-        }
+    <p>Sorted List:
+        @Model.Numbers;
     </p>
 
     <form asp-controller="home" asp-action="DownloadSortedList" >
