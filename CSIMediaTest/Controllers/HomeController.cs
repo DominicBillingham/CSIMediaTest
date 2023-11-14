@@ -1,5 +1,6 @@
 ﻿
 using AspNetCore.Data;
+using CSIMediaTest.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -20,8 +21,6 @@ namespace CSIMediaTest.Controllers
         public IActionResult Sort(string numberList, bool sortByAscending)
         {
 
-            var fish = _context.SortedLists.FirstOrDefault();
-
             Stopwatch sw = Stopwatch.StartNew();
 
             List<int> numberArray = new List<int>();
@@ -41,6 +40,21 @@ namespace CSIMediaTest.Controllers
             }
 
             var timeElapsed = sw.Elapsed;
+
+            var fish = new SortedNumbers();
+
+            fish.TimeTakenToSort = 100;
+            fish.InAscendingOrder = sortByAscending;
+
+            fish.Numbers = new List<Number>();
+
+            fish.Numbers.Add(new Number(5));
+            fish.Numbers.Add(new Number(12));
+            fish.Numbers.Add(new Number(2));
+
+            _context.SortedNumbers.Add(fish);
+            _context.SaveChanges();
+
 
 
             return Ok(timeElapsed.TotalMilliseconds);

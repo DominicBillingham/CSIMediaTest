@@ -23,6 +23,7 @@ namespace AspNetCore.Data
         {
         }
 
-        public DbSet<SortedList> SortedLists { get; set; }
+        public DbSet<SortedNumbers> SortedNumbers { get; set; }
+        public DbSet<Number> Numbers { get; set; }
     }
 }
