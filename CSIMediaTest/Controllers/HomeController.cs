@@ -41,7 +41,7 @@ namespace CSIMediaTest.Controllers
 
             var timeElapsed = sw.Elapsed.TotalMilliseconds;
 
-            var sortedNumbers = new SortedNumbers(sortByAscending, (int)timeElapsed);
+            var sortedNumbers = new SortedNumbers(sortByAscending, (float)timeElapsed);
 
             foreach (int number in numberList)
             {

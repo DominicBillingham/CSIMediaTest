@@ -6,7 +6,7 @@ namespace CSIMediaTest.Data.Models
     {
          public SortedNumbers() { }
 
-         public SortedNumbers(bool inAscendingOrder, int timeElapsed) { 
+         public SortedNumbers(bool inAscendingOrder, float timeElapsed) { 
             InAscendingOrder = inAscendingOrder;
             TimeTakenToSort = timeElapsed;
             Numbers = new List<Number>();
@@ -15,7 +15,7 @@ namespace CSIMediaTest.Data.Models
         [Key]
         public int Id { get; set; }
         public ICollection<Number> Numbers { get; set; }
-        public int TimeTakenToSort { get; set; }
+        public float TimeTakenToSort { get; set; }
         public bool InAscendingOrder { get; set; }
     }
 }

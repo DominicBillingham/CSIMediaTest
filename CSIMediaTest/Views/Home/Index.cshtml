@@ -10,9 +10,9 @@
 
 </header>
 
-<form asp-controller="home" asp-action="sort">
+<form asp-controller="home" asp-action="sort" class="mb-4">
 
-    <h3>Input Numbers Below</h3>
+    <h4>Input Numbers Below</h4>
     <input name="numberListString" class="col-3" type="text" placeholder="15 12 10" />
 
     <select name="sortByAscending">
@@ -27,6 +27,8 @@
 
 @if (Model != null)
 {
+
+    <h4>Results</h4>
     <p>Time Taken: @Model.TimeTakenToSort</p>
     <p>Sorted List: 
         @foreach(var num in Model.Numbers)
