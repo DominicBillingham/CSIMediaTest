@@ -1,0 +1,10 @@
+﻿Configuration:
+A database string can be set in appsettings.json.
+
+Assumptions:
+Time taken is just for the sort, rather than the full HTTP request
+
+Decisions:
+I thought the best way to store the array of numbers in the database was as a serialised JSON file
+While the Sort() breaks Single Responsibility Principle, splitting it up seemed overkill and would make the code harder to read. If the application grew bigger, or the sort was more complex, then I'd devolve this function into Sort() and Save()
+I've used LINQs sort, it's a stable quicksort. By using LINQs sort, it keeps the code tidy and is relatively performant (as it uses quicksort)
