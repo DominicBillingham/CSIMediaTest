@@ -63,7 +63,7 @@ namespace CSIMediaTest.Controllers
 
         public FileContentResult DownloadSortedList(int listId)
         {
-            var SortedNumber = _context.SortedNumbers.Where(x => x.Id == listId).Include(x => x.Numbers);
+            var SortedNumber = _context.SortedNumbers.Find(listId);
             string jsonString = JsonSerializer.Serialize(SortedNumber);
             var fileBytes = Encoding.ASCII.GetBytes(jsonString);
 
