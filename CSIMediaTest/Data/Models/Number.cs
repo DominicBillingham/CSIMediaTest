@@ -11,7 +11,6 @@ namespace CSIMediaTest.Data.Models
         [Key]
         public int Id { get; set; }
         public int Value { get; set; }
-        public SortedNumbers SortedNumbers { get; set; }
 
     }
 }

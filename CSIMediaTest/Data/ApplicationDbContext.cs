@@ -18,11 +18,6 @@ namespace AspNetCore.Data
                 .Build();
             optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
         }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-        }
-
         public DbSet<SortedNumbers> SortedNumbers { get; set; }
         public DbSet<Number> Numbers { get; set; }
     }

@@ -2,7 +2,11 @@
 using AspNetCore.Data;
 using CSIMediaTest.Data.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Diagnostics;
+using System.Text;
+using System.Text.Json;
 
 namespace CSIMediaTest.Controllers
 {
@@ -18,10 +22,10 @@ namespace CSIMediaTest.Controllers
             return View();
         }
 
-        public IActionResult Sort(string numberList, bool sortByAscending)
+        public IActionResult Sort(string numberListString, bool sortByAscending)
         {
 
-            List<int> numberArray = SplitNumberString(numberList);
+            List<int> numberList = SplitNumberString(numberListString);
 
             //Assumption 1: Time taken is just for the sort, rather than the full HTTP request
 
@@ -29,17 +33,17 @@ namespace CSIMediaTest.Controllers
 
             if (sortByAscending)
             {
-                numberArray = numberArray.OrderBy(number => number).ToList();
+                numberList = numberList.OrderBy(number => number).ToList();
             } else
             {
-                numberArray = numberArray.OrderByDescending(number => number).ToList();
+                numberList = numberList.OrderByDescending(number => number).ToList();
             }
 
             var timeElapsed = sw.Elapsed.TotalMilliseconds;
 
             var sortedNumbers = new SortedNumbers(sortByAscending, (int)timeElapsed);
 
-            foreach (int number in numberArray)
+            foreach (int number in numberList)
             {
                 sortedNumbers.Numbers.Add(new Number(number));
             }
@@ -47,18 +51,30 @@ namespace CSIMediaTest.Controllers
             _context.SortedNumbers.Add(sortedNumbers);
             _context.SaveChanges();
 
-            return Ok();
+            return View("Index", sortedNumbers);
 
         }
 
-        private List<int> SplitNumberString(string numberString)
+        private List<int> SplitNumberString(string numberListString)
         {
-            List<int> numberArray = new List<int>();
-            foreach (string number in numberString.Split(" "))
+            List<int> numberList = new List<int>();
+            foreach (string number in numberListString.Split(" "))
             {
-                numberArray.Add(int.Parse(number));
+                numberList.Add(int.Parse(number));
             }
-            return numberArray;
+            return numberList;
+        }
+
+        public FileContentResult DownloadSortedList(int listId)
+        {
+            var SortedNumber = _context.SortedNumbers.Where(x => x.Id == listId).Include(x => x.Numbers);
+            string jsonString = JsonSerializer.Serialize(SortedNumber);
+            var fileBytes = Encoding.ASCII.GetBytes(jsonString);
+
+            return new FileContentResult(fileBytes, "text/plain")
+            {
+                FileDownloadName = "SortedNumbersJSON"
+            };
         }
 
     }

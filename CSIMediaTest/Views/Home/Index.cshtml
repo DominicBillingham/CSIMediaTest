@@ -1,10 +1,19 @@
-﻿
+﻿@model CSIMediaTest.Data.Models.SortedNumbers;
 
+<header>
+
+    <div class="row toast-header mb-4">
+
+        <h1>CSI Media Technical Test</h1>
+
+    </div>
+
+</header>
 
 <form asp-controller="home" asp-action="sort">
 
-    <h2>Input Numbers Below</h2>
-    <input name="numberList" type="text" placeholder="15 12 10" />
+    <h3>Input Numbers Below</h3>
+    <input name="numberListString" class="col-3" type="text" placeholder="15 12 10" />
 
     <select name="sortByAscending">
         <option value="true">Sort by ascending</option>
@@ -13,15 +22,25 @@
 
     <input type="submit" value="Press to sort" />
 
-
-    <h2>Output goes here</h2>
-    <p>Time Taken:</p>
-    <p>Sorted List: </p>
-
-    <h2>Save?</h2>
-    <input type="button" value="Save" />
-
-
-
 </form>
 
+
+@if (Model != null)
+{
+    <p>Time Taken: @Model.TimeTakenToSort</p>
+    <p>Sorted List: 
+        @foreach(var num in Model.Numbers)
+        {
+            <span>@num.Value</span>
+        }
+    </p>
+
+    <form asp-controller="home" asp-action="DownloadSortedList" >
+
+        <input type="hidden" name="listId" value="@Model.Id">
+        <input type="submit" value="Download Result" />
+
+    </form>
+
+
+}
