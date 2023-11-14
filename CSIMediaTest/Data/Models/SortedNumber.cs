@@ -4,6 +4,14 @@ namespace CSIMediaTest.Data.Models
 {
     public class SortedNumbers
     {
+         public SortedNumbers() { }
+
+         public SortedNumbers(bool inAscendingOrder, int timeElapsed) { 
+            InAscendingOrder = inAscendingOrder;
+            TimeTakenToSort = timeElapsed;
+            Numbers = new List<Number>();
+        }
+
         [Key]
         public int Id { get; set; }
         public ICollection<Number> Numbers { get; set; }

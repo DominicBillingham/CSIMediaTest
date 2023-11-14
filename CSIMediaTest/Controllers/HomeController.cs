@@ -21,15 +21,11 @@ namespace CSIMediaTest.Controllers
         public IActionResult Sort(string numberList, bool sortByAscending)
         {
 
-            Stopwatch sw = Stopwatch.StartNew();
-
-            List<int> numberArray = new List<int>();
-            foreach (string number in numberList.Split(" "))
-            {
-                numberArray.Add(int.Parse(number));
-            }
+            List<int> numberArray = SplitNumberString(numberList);
 
             //Assumption 1: Time taken is just for the sort, rather than the full HTTP request
+
+            Stopwatch sw = Stopwatch.StartNew();
 
             if (sortByAscending)
             {
@@ -39,25 +35,30 @@ namespace CSIMediaTest.Controllers
                 numberArray = numberArray.OrderByDescending(number => number).ToList();
             }
 
-            var timeElapsed = sw.Elapsed;
+            var timeElapsed = sw.Elapsed.TotalMilliseconds;
 
-            var fish = new SortedNumbers();
+            var sortedNumbers = new SortedNumbers(sortByAscending, (int)timeElapsed);
 
-            fish.TimeTakenToSort = 100;
-            fish.InAscendingOrder = sortByAscending;
+            foreach (int number in numberArray)
+            {
+                sortedNumbers.Numbers.Add(new Number(number));
+            }
 
-            fish.Numbers = new List<Number>();
-
-            fish.Numbers.Add(new Number(5));
-            fish.Numbers.Add(new Number(12));
-            fish.Numbers.Add(new Number(2));
-
-            _context.SortedNumbers.Add(fish);
+            _context.SortedNumbers.Add(sortedNumbers);
             _context.SaveChanges();
 
+            return Ok();
 
+        }
 
-            return Ok(timeElapsed.TotalMilliseconds);
+        private List<int> SplitNumberString(string numberString)
+        {
+            List<int> numberArray = new List<int>();
+            foreach (string number in numberString.Split(" "))
+            {
+                numberArray.Add(int.Parse(number));
+            }
+            return numberArray;
         }
 
     }
